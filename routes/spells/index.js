@@ -17,11 +17,18 @@ router.get("/", async(req, res)=>{
 
 //listando um feitiço
 router.get("/findSpell/:id", async(req, res)=>{    
-    console.log("Listando feitiço");    
-
+    console.log("Consultando feitiço");        
     if(req.params.id){
-        const resultado = await banco.consultaSpell(req.params.id);
-        res.send(`Feitiço consultada: ${resultado[0].nome}`);
+        console.log(req.params.id);
+        const [resultado] = await banco.consultaSpell(req.params.id);
+
+        if(resultado){
+            console.log(resultado[0]);
+            res.json({mensagem: 'Feitiço encontrada', feitico : resultado[0]});
+        }else{
+            console.log(resultado);
+            res.json({mensagem: 'Feitiço não encontrada'});
+        }
     }
     else{
         res.send("Favor inserir o ID do feitiço a ser buscado!");
